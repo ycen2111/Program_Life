@@ -32,7 +32,7 @@ grid_surface.fill(config.LIGHT_GREY)
 is_info_show = False
 info_surface = game.Surface(region.get_info_size())
 info_surface.fill(config.LIGHT_GREY)
-info_name = ["coordinary", "env_mate", "code_id", "curr_step", "age", "own_mate", "own_ener"] #显示列表
+info_name = ["coordinary", "RGB", "neighbor"] #显示列表
 info_list = []
 info_coordinary = [0, 0] #
 for i, name in enumerate(info_name):
@@ -40,8 +40,6 @@ for i, name in enumerate(info_name):
 
 #初始化方格颜色和数量
 grid.init()
-#初始化存储单元
-data.init()
 
 #实例化计时器
 stay_timer = timer.Timer(0.5) #0.5s后完成
@@ -56,6 +54,8 @@ while is_running:
     coordinary_x, coordinary_y = grid.find_grid()
     #更新计时器数据
     stay_timer.update()
+    #运行主逻辑
+    sim.run_sim()
 
     #监控用户事件
     for event in game.event.get():
@@ -77,13 +77,16 @@ while is_running:
                     #点击在start按钮
                     elif (start_button.on_button()):
                         if (start_button.get_text() == "START"):
-                            #结束模拟
-                            start_button.change_text("STOP")
-                            sim.stop_sim()
-                        else:
                             #开始模拟
-                            start_button.change_text("START")
+                            start_button.change_text("STOP")
                             sim.start_sim()
+                        else:
+                            #结束模拟
+                            start_button.change_text("START")
+                            sim.stop_sim()
+                #中键
+                elif (event.button == 2):
+                    print("a")
                 #右键
                 elif (event.button == 3):
                     mouse.button_right = True
@@ -120,7 +123,7 @@ while is_running:
                 else:
                     start_button.change_color(config.DELIGHT_GREY)
 
-    #鼠标静止1s，并且鼠标指向存活的cell
+    #鼠标静止了0.5s，并且鼠标指向存活的cell
     if (stay_timer.is_finish and not is_info_show):
         #查询当前方格信息
         if (data.is_cell_alive(coordinary_x, coordinary_y)):

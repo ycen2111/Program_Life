@@ -4,10 +4,6 @@ GRID_GAP = 1
 ROWS = 80
 COLS = 80
 
-#初始资源参数
-MATERIAL_NUM = 10
-ENERGY = 1
-
 #颜色定义
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -17,6 +13,9 @@ LIGHT_GREY = (200,200,200)
 RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
+
+#变色量化值
+CHANGE_COLOR_UNIT = 125
 
 def set_grid_size(new_size):
     global GRID_SIZE

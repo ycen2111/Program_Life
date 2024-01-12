@@ -1,6 +1,7 @@
 import config
 import grid_info.grid_color as grid_color
 import grid_info.grid_coordinary as grid_coordinary
+import my_data.grid_neighbor_number as grid_neighbor_number
 
 import my_data.cell_data as data
 
@@ -10,6 +11,8 @@ def init():
     grid_color.init(config.COLS, config.ROWS)
     #方格的位置和尺寸定义
     grid_coordinary.init(config.COLS, config.ROWS)
+    #初始化邻居排列编号
+    grid_neighbor_number.init(config.COLS, config.ROWS)
 
 #点击方格变色设置生命
 def click_grid():
@@ -19,12 +22,10 @@ def click_grid():
     if (grid_x < config.ROWS and grid_y < config.COLS):
         if (not data.is_cell_alive(grid_x, grid_y)): #如果坐标没有存活cell
             #记录这个坐标
-            data.add_lived_cell(grid_x, grid_y, code_id=1, start_step=0)
-            print("1 cell added in (" + str(grid_x) + ", " + str(grid_y) + "), " + str(data.count_alive_cell()) + " total alive")
+            data.add_cell_level(grid_x, grid_y)
         else:
             #去除这个坐标
-            data.remove_lived_cell(grid_x, grid_y)
-            print("1 cell removed in (" + str(grid_x) + ", " + str(grid_y) + "), " + str(data.count_alive_cell()) + " total alive")
+            data.sub_cell_level(grid_x, grid_y)
 
 #返回单个方格颜色
 def get_grid_color(x, y):
