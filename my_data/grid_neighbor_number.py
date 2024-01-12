@@ -56,7 +56,7 @@ def get_neighbors_list(x, y):
         if (y == 0): #第一行
             return [(x-1, y), (x, y+1), (x+1, y), (x-1, y+1), (x+1, y+1)]
         elif (y == ROWS-1): #最后一行
-            return [(x-1, y), (x, y+1), (x+1, y), (x-1, y-1), (x+1, y-1)]
+            return [(x-1, y), (x, y-1), (x+1, y), (x-1, y-1), (x+1, y-1)]
         return [(x-1, y), (x+1, y), (x, y+1), (x, y-1), (x-1, y+1), (x+1, y+1), (x+1, y-1), (x-1, y-1)]
     
 #返回neibor_num_list

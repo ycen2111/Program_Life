@@ -1,8 +1,9 @@
 #初始界面参数
-GRID_SIZE = 5
-GRID_GAP = 1
-ROWS = 80
-COLS = 80
+GRID_SIZE = 2
+GRID_GAP = 0
+ROWS = 300
+COLS = 300
+TICK_RATE = 60
 
 #颜色定义
 BLACK = (0,0,0)

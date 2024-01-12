@@ -44,8 +44,13 @@ grid.init()
 #实例化计时器
 stay_timer = timer.Timer(0.5) #0.5s后完成
 
+# 创建时钟对象
+rate_clock = game.time.Clock()
+
 #开始
 while is_running:
+    # 设置帧率
+    rate_clock.tick(config.TICK_RATE)
     #设置界面底色
     grid_surface.fill(config.LIGHT_GREY)
     #记录鼠标位置
@@ -56,6 +61,9 @@ while is_running:
     stay_timer.update()
     #运行主逻辑
     sim.run_sim()
+
+    #获取按下的键的列表
+    keys = game.key.get_pressed()
 
     #监控用户事件
     for event in game.event.get():
@@ -73,7 +81,7 @@ while is_running:
                     mouse.button_left = True
                     #点击在grid_region区域
                     if (region.in_grid_region(mouse_pos)):
-                        grid.click_grid()
+                        grid.switch_grid()
                     #点击在start按钮
                     elif (start_button.on_button()):
                         if (start_button.get_text() == "START"):
@@ -84,9 +92,6 @@ while is_running:
                             #结束模拟
                             start_button.change_text("START")
                             sim.stop_sim()
-                #中键
-                elif (event.button == 2):
-                    print("a")
                 #右键
                 elif (event.button == 3):
                     mouse.button_right = True
@@ -102,6 +107,7 @@ while is_running:
             #检测到鼠标松开
             elif (event.type == game.MOUSEBUTTONUP and region.in_grid_region(mouse_pos)):
                 mouse.button_left = False
+                mouse.button_middle = False
                 mouse.button_right = False
 
             #检测到鼠标移动
@@ -110,7 +116,10 @@ while is_running:
                 mouse.save_coordinary(mouse_pos)
                 #鼠标在grid范围内
                 if (region.in_grid_region(mouse_pos)):
-                    #鼠标右击
+                    #鼠标左击并按下了shift，批量设置活的cell
+                    if (mouse.button_left and (keys[game.K_LSHIFT] or keys[game.K_LSHIFT])):
+                        grid.set_grid_live()
+                    #鼠标右击移动画布
                     if (mouse.button_right):
                         #得到鼠标移动距离
                         distance = mouse.get_moving_distance()

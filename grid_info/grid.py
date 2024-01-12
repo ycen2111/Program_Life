@@ -14,8 +14,8 @@ def init():
     #初始化邻居排列编号
     grid_neighbor_number.init(config.COLS, config.ROWS)
 
-#点击方格变色设置生命
-def click_grid():
+#点击方格切换方格状态
+def switch_grid():
     #查找方格坐标
     grid_x, grid_y = find_grid()
     #检查坐标是否有效
@@ -26,6 +26,16 @@ def click_grid():
         else:
             #去除这个坐标
             data.sub_cell_level(grid_x, grid_y)
+
+#点击方格设置为live cell
+def set_grid_live():
+    #查找方格坐标
+    grid_x, grid_y = find_grid()
+    #检查坐标是否有效
+    if (grid_x < config.ROWS and grid_y < config.COLS):
+        if (not data.is_cell_alive(grid_x, grid_y)): #如果坐标没有存活cell
+            #记录这个坐标
+            data.add_cell_level(grid_x, grid_y)
 
 #返回单个方格颜色
 def get_grid_color(x, y):

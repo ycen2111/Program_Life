@@ -2,6 +2,7 @@
 mouse_x = 0
 mouse_y = 0
 button_right = False
+button_middle = False
 button_left = False
 last_mouse_x = 0
 last_mouse_y = 0
