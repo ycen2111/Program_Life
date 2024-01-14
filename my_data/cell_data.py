@@ -17,27 +17,34 @@ def count_alive_cell():
     return len(lived_cell)
 
 #增加方格状态
+#如果增加后到达最大值则返回True
 def add_cell_level(x, y):
     global lived_cell
     (R, G, B) = color.color[x][y]
-    if (R + config.CHANGE_COLOR_UNIT >= 255):
+    if (R + config.ADD_COLOR_UNIT >= 255):
+        #neighbor.remove_neighbor(x, y)
         color.change_color(x, y, (255, G, B))
+        return True
     else:
         if (R == 0): #记录这个新生坐标
             lived_cell[x, y] = True
             neighbor.add_neighbor(x, y)
-        color.change_color(x, y, (R + config.CHANGE_COLOR_UNIT, G, B))
+        color.change_color(x, y, (R + config.ADD_COLOR_UNIT, G, B))
+        return False
 
 #减少方格状态
+#如果减小到最小值则返回True
 def sub_cell_level(x, y):
     global lived_cell
     (R, G, B) = color.color[x][y]
-    if (R <= config.CHANGE_COLOR_UNIT): #删除死亡坐标
+    if (R <= config.SUB_COLOR_UNIT): #删除死亡坐标
         del lived_cell[x, y]
         neighbor.remove_neighbor(x, y)
         color.change_color(x, y, (0, G, B))
+        return True
     else:
-        color.change_color(x, y, (R - config.CHANGE_COLOR_UNIT, G, B))
+        color.change_color(x, y, (R - config.SUB_COLOR_UNIT, G, B))
+        return False
 
 #返回String格式信息
 def get_string_info(x, y):

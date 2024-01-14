@@ -16,7 +16,7 @@ game.init()
 is_running = True
 
 #界面大小设置
-TITLE = "Test"
+TITLE = "Programming"
 game.display.set_caption(TITLE)
 screen = game.display.set_mode((region.WIDTH,region.HEIGHT))
 #目录区域设置
@@ -28,21 +28,21 @@ start_button.draw()
 #方格区域设置
 grid_surface = game.Surface(region.get_grid_size())
 grid_surface.fill(config.LIGHT_GREY)
-#鼠标信息区域设置
-is_info_show = False
-info_surface = game.Surface(region.get_info_size())
+#菜单栏信息区域设置
+#is_info_show = False
+info_surface = game.Surface(region.get_bar_info_size())
 info_surface.fill(config.LIGHT_GREY)
 info_name = ["coordinary", "RGB", "neighbor"] #显示列表
 info_list = []
 info_coordinary = [0, 0] #
 for i, name in enumerate(info_name):
-    info_list.append(text.Text(name, config.BLACK, 16, (region.INFO_WIDTH/2, 10 * i + 8)))
+    info_list.append(text.Text(name, config.BLACK, 16, (region.WIDTH - region.BAR_INFO_WIDTH/2, 12 * i + 8)))
 
 #初始化方格颜色和数量
 grid.init()
 
 #实例化计时器
-stay_timer = timer.Timer(0.5) #0.5s后完成
+#stay_timer = timer.Timer(0.5) #0.5s后完成
 
 # 创建时钟对象
 rate_clock = game.time.Clock()
@@ -58,7 +58,7 @@ while is_running:
     #计算鼠标指向的方格位置
     coordinary_x, coordinary_y = grid.find_grid()
     #更新计时器数据
-    stay_timer.update()
+    #stay_timer.update()
     #运行主逻辑
     sim.run_sim()
 
@@ -112,7 +112,7 @@ while is_running:
 
             #检测到鼠标移动
             if (event.type == game.MOUSEMOTION):
-                stay_timer.reset_start_time()
+                #stay_timer.reset_start_time()
                 mouse.save_coordinary(mouse_pos)
                 #鼠标在grid范围内
                 if (region.in_grid_region(mouse_pos)):
@@ -133,11 +133,11 @@ while is_running:
                     start_button.change_color(config.DELIGHT_GREY)
 
     #鼠标静止了0.5s，并且鼠标指向存活的cell
-    if (stay_timer.is_finish and not is_info_show):
-        #查询当前方格信息
-        if (data.is_cell_alive(coordinary_x, coordinary_y)):
-            is_info_show = True
-            info_coordinary = [coordinary_x, coordinary_y]
+    # if (stay_timer.is_finish and not is_info_show):
+    #     #查询当前方格信息
+    #     if (data.is_cell_alive(coordinary_x, coordinary_y)):
+    #         is_info_show = True
+    #         info_coordinary = [coordinary_x, coordinary_y]
     
     #将方格画到界面上
     for y, row in enumerate(grid.get_grid_coordinary()):
@@ -145,13 +145,18 @@ while is_running:
             game.draw.rect(grid_surface, grid.get_grid_color(x, y), rect)
     screen.blit(menu_surface, region.get_menu_start_point())
     screen.blit(grid_surface, region.get_grid_start_point())
-    if (is_info_show): #方格信息栏显示
-        screen.blit(info_surface, mouse_pos) #绘画底色
-        cell_info_list = data.get_string_info(info_coordinary[0], info_coordinary[1])
-        for i, info_text in enumerate(info_list):
-            info_text.change_text(cell_info_list[i])
-            info_text.change_pos(mouse_pos)
-            info_text.draw(screen)
+    #目录信息显示
+    cell_info_list = data.get_string_info(coordinary_x, coordinary_y)
+    for i, info_text in enumerate(info_list):
+        info_text.change_text(cell_info_list[i])
+        info_text.draw(screen)
+    # if (is_info_show): #方格信息栏显示
+    #     screen.blit(info_surface, mouse_pos) #绘画底色
+    #     cell_info_list = data.get_string_info(info_coordinary[0], info_coordinary[1])
+    #     for i, info_text in enumerate(info_list):
+    #         info_text.change_text(cell_info_list[i])
+    #         info_text.change_pos(mouse_pos)
+    #         info_text.draw(screen)
 
     #刷新屏幕
     game.display.flip()

@@ -16,7 +16,8 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 
 #变色量化值
-CHANGE_COLOR_UNIT = 125
+ADD_COLOR_UNIT = 31
+SUB_COLOR_UNIT = 4 * ADD_COLOR_UNIT
 
 def set_grid_size(new_size):
     global GRID_SIZE
